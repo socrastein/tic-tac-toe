@@ -1,0 +1,72 @@
+* {
+    font-family: 'Ubuntu', sans-serif;
+    background-color: rgb(240,240,240);
+}
+
+
+#gameContainer {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+    margin: 3% auto;
+}
+
+#newGame {
+    height: 2rem;
+    font-size: 1.3rem;
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    padding: 16px;
+}
+
+#newGame:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(0,255,0,.5);
+}
+
+#gameBoard {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: 8px;
+}
+
+@keyframes fade {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+.gameCell {
+    height: 80px;
+    width: 80px;
+    border-radius: 5px;
+    border-style: solid;
+    font-size: 2rem;
+    font-weight: bold;
+    opacity: 0;
+}
+
+#cell0, #cell1, #cell2 {
+    animation-name: fade;
+    animation-duration: 3s;
+    animation-fill-mode: forwards;
+}
+
+#cell3, #cell4, #cell5 {
+    animation-name: fade;
+    animation-duration: 3s;
+    animation-delay: 1s;
+    animation-fill-mode: forwards;
+}
+
+#cell6, #cell7, #cell8 {
+    animation-name: fade;
+    animation-duration: 3s;
+    animation-delay: 2s;
+    animation-fill-mode: forwards;
+}
