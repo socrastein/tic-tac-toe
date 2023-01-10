@@ -22,6 +22,19 @@
     display: flex;
     align-items: center;
     padding: 16px;
+    
+    /*TODO: turn opacity off when done
+    opacity: 0; */
+
+    /* animation: fade;
+    animation-delay: 3.5s;
+    animation-duration: 2s;
+    animation-fill-mode: forwards; */
+}
+
+.gameCell:hover {
+    border-width: 3px;
+    border-color: black;
 }
 
 #newGame:hover {
@@ -48,10 +61,11 @@
     border-style: solid;
     font-size: 2rem;
     font-weight: bold;
-    opacity: 0;
+    /*TODO: turn opacity off when done
+    opacity: 0; */
 }
 
-#cell0, #cell1, #cell2 {
+/* #cell0, #cell1, #cell2 {
     animation-name: fade;
     animation-duration: 3s;
     animation-fill-mode: forwards;
@@ -69,4 +83,4 @@
     animation-duration: 3s;
     animation-delay: 2s;
     animation-fill-mode: forwards;
-}
+} */
