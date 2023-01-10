@@ -4,6 +4,7 @@ const Game = (() => {
   var playerTurn = 1;
   var p1Char = undefined;
   var p2Char = undefined;
+  var choosing = false;
   var gameOver = false;
 
   const turnDisplay = document.getElementById('turnDisplay');
@@ -15,26 +16,11 @@ const Game = (() => {
     playerTurn = 1;
     p1Char = undefined;
     p2Char = undefined;
+    choosing = true;
     resultDisplay.innerHTML = '';
     turnDisplay.innerHTML = '';
     gameBoard.clearBoard();
-    chooseChar();
-  }
-
-  const chooseChar = function () {
-    p1Char = undefined;
-    p2Char = undefined;
-
-    gameBoard.cells[0].style.borderStyle = "none";
-    gameBoard.cells[1].style.borderStyle = "none";
-    gameBoard.cells[2].style.borderStyle = "none";
-    gameBoard.cells[3].innerHTML = 'X';
-    gameBoard.cells[4].innerHTML = 'or';
-    gameBoard.cells[4].style.borderStyle = "none";
-    gameBoard.cells[5].innerHTML = 'O';
-    gameBoard.cells[6].style.borderStyle = "none";
-    gameBoard.cells[7].style.borderStyle = "none";
-    gameBoard.cells[8].style.borderStyle = "none";
+    gameBoard.charSelection();
   }
 
   const setChar = function (cell) {
@@ -43,6 +29,7 @@ const Game = (() => {
       p2Char = 'O';
       turnDisplay.innerHTML = 'Player 1: X';
       gameBoard.clearBoard();
+      choosing = false;
       return
     }
     if(cell === gameBoard.cells[5]){
@@ -50,13 +37,14 @@ const Game = (() => {
       p2Char = 'X';
       turnDisplay.innerHTML = 'Player 1: O';
       gameBoard.clearBoard();
+      choosing = false;
       return
     }
   }
 
   const cellSelect = function (cell) {
     if(gameOver === true){return};
-    if(p1Char === undefined){
+    if(choosing){
       setChar(cell);
       return
     };
@@ -66,6 +54,11 @@ const Game = (() => {
         cell.innerHTML = p1Char;
       } else cell.innerHTML = p2Char; 
       round ++;
+      if(round === 10){
+        endGame();
+        return
+      }
+      console.log(round);
       cell.setAttribute("class", "gameCell");
 
       if(round > 4){
@@ -105,7 +98,6 @@ const Game = (() => {
       cell.style.boxShadow = 'inset 0 0 8px rgba(0,0,255,.5)';
     })
   }
-
 
   return {newGame, cellSelect}
 })();
@@ -150,6 +142,19 @@ const gameBoard = (() => {
   } 
   }
 
+  const charSelection = function () {
+    gameBoard.cells[0].style.borderStyle = "none";
+    gameBoard.cells[1].style.borderStyle = "none";
+    gameBoard.cells[2].style.borderStyle = "none";
+    gameBoard.cells[3].innerHTML = 'X';
+    gameBoard.cells[4].innerHTML = 'or';
+    gameBoard.cells[4].style.borderStyle = "none";
+    gameBoard.cells[5].innerHTML = 'O';
+    gameBoard.cells[6].style.borderStyle = "none";
+    gameBoard.cells[7].style.borderStyle = "none";
+    gameBoard.cells[8].style.borderStyle = "none";
+  }
+
   const clearBoard = function () {
     cells.forEach(cell =>{
       cell.innerHTML = '';
@@ -159,6 +164,5 @@ const gameBoard = (() => {
     })
   }
 
-  return {cells, checkWin, clearBoard};
+  return {cells, checkWin, charSelection, clearBoard};
 })();
-
