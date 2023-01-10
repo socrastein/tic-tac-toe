@@ -1,14 +1,22 @@
 const Game = (() => {
   var cpu = true;
+  var round = 0;
   var playerTurn = 1;
   var p1Char = undefined;
   var p2Char = undefined;
+  var gameOver = false;
+
+  const turnDisplay = document.getElementById('turnDisplay');
+  const resultDisplay = document.getElementById('resultDisplay');
 
   const newGame = function () {
-    console.log('Starting New Game');
+    gameOver = false;
+    round = 1;
     playerTurn = 1;
     p1Char = undefined;
     p2Char = undefined;
+    resultDisplay.innerHTML = '';
+    turnDisplay.innerHTML = '';
     gameBoard.clearBoard();
     chooseChar();
   }
@@ -29,41 +37,79 @@ const Game = (() => {
     gameBoard.cells[8].style.borderStyle = "none";
   }
 
-  const cellSelect = function (cell) {
-    if(p1Char === undefined){
-      if(cell === gameBoard.cells[3]){
-        p1Char = 'X';
-        p2Char = 'O';
-        gameBoard.clearBoard();
-        return
-      }
-      if(cell === gameBoard.cells[5]){
-        p1Char = 'O';
-        p2Char = 'X';
-        gameBoard.clearBoard();
-        return
-      }
+  const setChar = function (cell) {
+    if(cell === gameBoard.cells[3]){
+      p1Char = 'X';
+      p2Char = 'O';
+      turnDisplay.innerHTML = 'Player 1: X';
+      gameBoard.clearBoard();
+      return
     }
+    if(cell === gameBoard.cells[5]){
+      p1Char = 'O';
+      p2Char = 'X';
+      turnDisplay.innerHTML = 'Player 1: O';
+      gameBoard.clearBoard();
+      return
+    }
+  }
+
+  const cellSelect = function (cell) {
+    if(gameOver === true){return};
+    if(p1Char === undefined){
+      setChar(cell);
+      return
+    };
 
     if(cell.className.includes("clear")){
       if(playerTurn === 1){
         cell.innerHTML = p1Char;
       } else cell.innerHTML = p2Char; 
-      switchTurn();
+      round ++;
       cell.setAttribute("class", "gameCell");
-    }
 
+      if(round > 4){
+        winningRow = gameBoard.checkWin();
+        if(winningRow){
+          endGame(winningRow);
+          return
+        };
+      }
+      switchTurn();
+    }
   }
 
   const switchTurn = function () {
+    if(round === 1){
+      turnDisplay.innerHTML= `Player 1: ${p1Char}`}
+
     if(playerTurn === 1){
       playerTurn = 2;
-    } else playerTurn = 1;
+      turnDisplay.innerHTML= `Player 2: ${p2Char}`
+    } else {
+    playerTurn = 1;
+    turnDisplay.innerHTML= `Player 1: ${p1Char}`;
+  }
+}
+
+  const endGame = function (winningRow) {
+    turnDisplay.innerHTML = 'Game Over';
+    gameOver = true;
+
+    if(playerTurn === 1){
+      resultDisplay.innerHTML = 'Player 1 Wins'
+    } else resultDisplay.innerHTML = 'Player 2 Wins'
+
+    winningRow.forEach(cell =>{
+      console.log(cell);
+      cell.style.boxShadow = 'inset 0 0 8px rgba(0,0,255,.5)';
+    })
   }
 
 
   return {newGame, cellSelect}
 })();
+
 
 const gameBoard = (() => {
   const newGameButton = document.getElementById('newGame');
@@ -87,15 +133,12 @@ const gameBoard = (() => {
 
   const lines = [row1, row2, row3, col1, col2, col3, diag1, diag2];
 
-  const fillCell = function (cell) {
-    this.cells[cell].innerHTML = char;
-  }
-
   const checkWin = function () {
     var win = false;
 
     for(i=0; i<lines.length; i++){
       var line = lines[i];
+      if(line[0].innerHTML === ''){continue}
       if((line[0].innerHTML === line[1].innerHTML) && 
          (line[1].innerHTML === line[2].innerHTML)){
           win = line;
@@ -111,24 +154,11 @@ const gameBoard = (() => {
     cells.forEach(cell =>{
       cell.innerHTML = '';
       cell.style.borderStyle = 'solid';
+      cell.style.boxShadow = 'none';
       cell.setAttribute("class", "gameCell clear");
     })
   }
 
-  return {
-    cells, 
-    row1, row2, row3, 
-    col1, col2, col3, 
-    diag1, diag2, lines,
-    fillCell, checkWin, clearBoard};
+  return {cells, checkWin, clearBoard};
 })();
-
-
-
-const player = function () {
-
-}
-
-console.log(gameBoard.checkWin());
-
 
