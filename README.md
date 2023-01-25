@@ -1,6 +1,6 @@
 # Tic-Tac-Toe
 
-### A Javascript project from The Odin Project.
+### A Javascript project from [The Odin Project](https://www.theodinproject.com/).
 
 The task was to use object-oriented programming to recreate the classic tic-tac-toe game.
 
